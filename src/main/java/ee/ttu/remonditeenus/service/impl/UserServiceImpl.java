@@ -1,0 +1,27 @@
+package ee.ttu.remonditeenus.service.impl;
+
+/**
+ * Created by markoka on 9.06.2015.
+ */
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import ee.ttu.remonditeenus.dao.UserDao;
+import ee.ttu.remonditeenus.model.UserAccount;
+import ee.ttu.remonditeenus.service.UserService;
+
+@Service
+@Transactional
+public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private UserDao userDao;
+
+    @Override
+    public UserAccount loadUserByUsername(String username) {
+        return userDao.loadUserByUsername(username);
+    }
+
+}
