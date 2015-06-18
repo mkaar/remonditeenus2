@@ -3,6 +3,7 @@ package ee.ttu.remonditeenus.service.impl;
 import ee.ttu.remonditeenus.dao.ServiceRequestDao;
 import ee.ttu.remonditeenus.dao.UserDao;
 import ee.ttu.remonditeenus.model.Customer;
+import ee.ttu.remonditeenus.model.ServiceOrder;
 import ee.ttu.remonditeenus.model.ServiceRequest;
 import ee.ttu.remonditeenus.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +33,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void createServiceRequest(ServiceRequest serviceRequest) {
         serviceRequestDao.createServiceRequest(serviceRequest);
+    }
+
+    @Override
+    public void createServiceOrder(ServiceOrder serviceOrder) {
+        serviceRequestDao.createServiceOrder(serviceOrder);
+    }
+
+    @Override
+    public List<ServiceRequest> getServiceRequestByClientName(String client) {
+        return serviceRequestDao.getAllServiceRequestsByCustomerName(client);
     }
 }

@@ -64,4 +64,20 @@ public class ServiceRequestService {
         sr.setCustomer(userDao.getCustomerById(new Long(customer)));
         dao.updateServiceRequest(sr);
     }
+
+    public ServiceOrderStatusType getSoStatusType(int i) {
+        return dao.getSoStatusType(i);
+    }
+
+    public List<ServiceRequest> getServicesByOrderId(String orderId) {
+        return dao.getAllServiceRequestsByOrderId(orderId);
+    }
+
+    public List<ServiceOrder> getServicesByEmployee(String employee) {
+        return dao.getServicesByEmployee(employee);
+    }
+
+    public List<ServiceRequest> getServicesByStatus(String status) {
+        return dao.getServicesByStatus(status);
+    }
 }

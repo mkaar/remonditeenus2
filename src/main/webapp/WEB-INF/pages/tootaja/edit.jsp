@@ -38,6 +38,6 @@
   <input type="submit" value="Sisesta"/>
 </form>
 
-<h1><a href="serviceOrder?id=${param.id}">Vormista tellimus</a></h1>
+<h1><a href="serviceOrder/?id=${param.id}&username=${param.username}">Vormista tellimus</a></h1>
 </body>
 </html>

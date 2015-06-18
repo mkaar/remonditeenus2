@@ -1,9 +1,6 @@
 package ee.ttu.remonditeenus.dao;
 
-import ee.ttu.remonditeenus.model.ServiceNote;
-import ee.ttu.remonditeenus.model.ServiceRequest;
-import ee.ttu.remonditeenus.model.ServiceRequestStatusType;
-import ee.ttu.remonditeenus.model.ServiceRequestType;
+import ee.ttu.remonditeenus.model.*;
 
 import java.util.List;
 
@@ -30,4 +27,16 @@ public interface ServiceRequestDao {
     List<ServiceRequestStatusType> getAllServiceRequestStatusTypes();
 
     void updateServiceRequest(ServiceRequest sr);
+
+    void createServiceOrder(ServiceOrder serviceOrder);
+
+    ServiceOrderStatusType getSoStatusType(int i);
+
+    List<ServiceRequest> getAllServiceRequestsByCustomerName(String client);
+
+    List<ServiceRequest> getAllServiceRequestsByOrderId(String orderId);
+
+    List<ServiceOrder> getServicesByEmployee(String employee);
+
+    List<ServiceRequest> getServicesByStatus(String status);
 }

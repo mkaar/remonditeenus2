@@ -1,44 +1,189 @@
 package ee.ttu.remonditeenus.model;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-/**
- * Created by markoka on 9.06.2015.
- */
 @Entity
-@Table(name = "service_order")
+@Table(name="service_order")
 public class ServiceOrder {
-    private Long serviceOrder;
-    private ServiceRequest serviceRequest;
-    private ServiceOrderStatusType soStatus;
 
-    @Id
-    @Column(name="service_order")
-    public Long getServiceOrder() {
-        return serviceOrder;
-    }
+	private int id;
+	
+	private ServiceOrderStatusType serviceOrderStatusType;
+	
+	private Person createdBy;
+	
+	private ServiceRequest serviceRequest;
+	
+	private Person updatedBy;
+	
+	private Date createdDate;
+	
+	private Date updatedDate;
+	
+	private Date statusChangedDate;
+	
+	private Person statusChangedBy;
+	
+	private List<ServiceDevice> serviceDevices;
+	
+	private List<ServicePart> serviceParts;
+	
+	private List<ServiceAction> serviceAction;
+	
+	private Double totalPrice;
+	
+	private String note;
 
-    public void setServiceOrder(Long serviceOrder) {
-        this.serviceOrder = serviceOrder;
-    }
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="service_order")
+	public int getId() {
+		return id;
+	}
 
-    @ManyToOne
-    @JoinColumn(name = "service_request_fk")
-    public ServiceRequest getServiceRequest() {
-        return serviceRequest;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public void setServiceRequest(ServiceRequest serviceRequest) {
-        this.serviceRequest = serviceRequest;
-    }
+	@ManyToOne
+	@JoinColumn(name="so_status_type_fk", nullable=true)
+	public ServiceOrderStatusType getServiceOrderStatusType() {
+		return serviceOrderStatusType;
+	}
 
-    @ManyToOne
-    @JoinColumn(name = "so_status_type_fk")
-    public ServiceOrderStatusType getSoStatus() {
-        return soStatus;
-    }
+	public void setServiceOrderStatusType(
+			ServiceOrderStatusType serviceOrderStatusType) {
+		this.serviceOrderStatusType = serviceOrderStatusType;
+	}
 
-    public void setSoStatus(ServiceOrderStatusType soStatus) {
-        this.soStatus = soStatus;
-    }
+	@ManyToOne(fetch = FetchType.LAZY, optional=true)
+	@NotFound(action= NotFoundAction.IGNORE)
+	@JoinColumn(name="created_by")
+	public Person getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Person createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	@OneToOne(optional=true)
+	@JoinColumn(name="service_request_fk", unique=true)
+	public ServiceRequest getServiceRequest() {
+		return serviceRequest;
+	}
+
+	public void setServiceRequest(ServiceRequest serviceRequest) {
+		this.serviceRequest = serviceRequest;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional=true)
+	@NotFound(action= NotFoundAction.IGNORE)
+	@JoinColumn(name="updated_by")
+	public Person getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(Person updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
+	@Column(name="created",nullable=true)
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	@Column(name="updated", nullable=true)
+	public Date getUpdatedDate() {
+		return updatedDate;
+	}
+
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
+	}
+
+	@Column(name="status_changed", nullable=true)
+	public Date getStatusChangedDate() {
+		return statusChangedDate;
+	}
+
+	public void setStatusChangedDate(Date statusChangedDate) {
+		this.statusChangedDate = statusChangedDate;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional=true)
+	@JoinColumn(name="status_changed_by")
+	@NotFound(action= NotFoundAction.IGNORE)
+	public Person getStatusChangedBy() {
+		return statusChangedBy;
+	}
+
+	public void setStatusChangedBy(Person statusChangedBy) {
+		this.statusChangedBy = statusChangedBy;
+	}
+
+	@Column(name="price_total", nullable=true)
+	public Double getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(Double totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
+	@Column(name="note", nullable=true)
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
+	}
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy="serviceOrder")
+	@NotFound(action= NotFoundAction.IGNORE)
+	public List<ServiceDevice> getServiceDevices() {
+		if (this.serviceDevices == null) {
+			this.serviceDevices = new ArrayList<ServiceDevice>();
+		}
+		return serviceDevices;
+	}
+	
+	public void setServiceDevices(List<ServiceDevice> serviceDevices) {
+		this.serviceDevices = serviceDevices;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="serviceOrder")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@NotFound(action= NotFoundAction.IGNORE)
+	public List<ServicePart> getServiceParts() {
+		return serviceParts;
+	}
+	
+	public void setServiceParts(List<ServicePart> serviceParts) {
+		this.serviceParts = serviceParts;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="serviceOrder")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	@NotFound(action= NotFoundAction.IGNORE)
+	public List<ServiceAction> getServiceAction() {
+		return serviceAction;
+	}
+	
+	public void setServiceAction(List<ServiceAction> serviceAction) {
+		this.serviceAction = serviceAction;
+	}
 }

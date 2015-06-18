@@ -45,7 +45,7 @@ public class ServiceRequestDaoImpl implements ServiceRequestDao {
     public List<ServiceNote> getNotesByServiceRequestId(Integer id) {
         List<ServiceNote> notes;
         ServiceOrder so = (ServiceOrder) em.createQuery("from ServiceOrder where service_request_fk = :id").setParameter("id", id).getSingleResult();
-        Query q = em.createQuery("from ServiceNote where service_order_fk= :id").setParameter("id", so.getServiceOrder());
+        Query q = em.createQuery("from ServiceNote where service_order_fk= :id").setParameter("id", so.getId());
         notes = (List<ServiceNote>) q.getResultList();
         return notes;
     }
@@ -73,6 +73,39 @@ public class ServiceRequestDaoImpl implements ServiceRequestDao {
     @Override
     public void updateServiceRequest(ServiceRequest sr) {
         em.merge(sr);
+    }
+
+    @Override
+    public void createServiceOrder(ServiceOrder serviceOrder) {
+        em.persist(serviceOrder);
+    }
+
+    @Override
+    public ServiceOrderStatusType getSoStatusType(int i) {
+        return (ServiceOrderStatusType)em.createQuery("from ServiceOrderStatusType where so_status_type=:id").setParameter("id", i).getSingleResult();
+    }
+
+    @Override
+    public List<ServiceRequest> getAllServiceRequestsByCustomerName(String client) {
+        UserAccount user = (UserAccount)em.createQuery("from UserAccount where username = :username").setParameter("username", client).getSingleResult();
+        return (List<ServiceRequest>)em.createQuery("from ServiceRequest where customer_fk = :id").setParameter("id", user.getUserAccount()).getResultList();
+    }
+
+    @Override
+    public List<ServiceRequest> getAllServiceRequestsByOrderId(String orderId) {
+        return (List<ServiceRequest>)em.createQuery("from ServiceRequest where service_request=:id").setParameter("id", orderId).getResultList();
+    }
+
+    @Override
+    public List<ServiceOrder> getServicesByEmployee(String employee) {
+        UserAccount user = (UserAccount)em.createQuery("from UserAccount where username = :username").setParameter("username", employee).getSingleResult();
+        return (List<ServiceOrder>)em.createQuery("from ServiceOrder where created_by = :id").setParameter("id", user.getUserAccount()).getResultList();
+    }
+
+    @Override
+    public List<ServiceRequest> getServicesByStatus(String status) {
+        ServiceRequestStatusType st = (ServiceRequestStatusType)em.createQuery("from ServiceRequestStatusType where type_name=:status").setParameter("status", status);
+        return (List<ServiceRequest>)em.createQuery("from ServiceRequest where service_request_status_type_fk = :id").setParameter("id", st.getId()).getResultList();
     }
 
 }

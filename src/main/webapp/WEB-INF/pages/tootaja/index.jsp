@@ -32,6 +32,33 @@
     <br>
     <input type="submit" value="Sisesta"/>
 </form:form>
+
+
+<h1>Otsi teenuseid</h1>
+
+<form action="search" method="POST">
+    <label for="client">Otsi kliendi järgi</label>
+    <input type="text" id="client" name="client" />
+    <input type="submit" value="Otsi" />
 </form>
+
+<form action="search" method="POST">
+    <label for="orderId">Otsi Service request-i id järgi</label>
+    <input type="text" id="orderId" name="orderId" />
+    <input type="submit" value="Otsi" />
+</form>
+
+<form action="search" method="POST">
+    <label for="employee">Otsi Service request-i id järgi</label>
+    <input type="text" id="employee" name="employee" />
+    <input type="submit" value="Otsi" />
+</form>
+
+<form action="search" method="POST">
+    <label for="status">Otsi statuse nime järgi</label>
+    <input type="text" id="status" name="status" />
+    <input type="submit" value="Otsi" />
+</form>
+
 </body>
 </html>

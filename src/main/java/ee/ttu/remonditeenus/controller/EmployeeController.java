@@ -55,10 +55,12 @@ public class EmployeeController {
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public ModelAndView edit(@RequestParam(value = "id", required = true) Integer id) {
         ModelAndView model = new ModelAndView("serviceRequest", "command", new ServiceRequestEditForm());
+        SecurityUser account = (SecurityUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ServiceRequest sr = serviceRequestService.getServiceRequest(id);
         model.addObject("serviceTypes", serviceRequestService.getAllServiceStatusTypes());
         model.addObject("customers", employeeService.getAllCustomers());
         model.addObject("serviceRequest", sr);
+        model.addObject("username", account.getUsername());
         model.setViewName("/tootaja/edit");
         return model;
     }
@@ -92,12 +94,39 @@ public class EmployeeController {
     public ModelAndView addServiceRequest(@ModelAttribute("serviceRequest")ServiceRequestForm service,
                              BindingResult result, ModelAndView model) {
         ServiceRequest serviceRequest = buildServiceRequest(service);
-        System.out.println(serviceRequest);
         employeeService.createServiceRequest(serviceRequest);
         model.addObject("lisatud", "true");
         model.addObject("username", service.getEmployeeUsername());
         model.addObject("customers", employeeService.getAllCustomers());
         model.setViewName("redirect:/tootaja/");
+        return model;
+    }
+
+    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    public ModelAndView search(@RequestParam(value = "client", required = false) String client,
+                               @RequestParam(value = "orderId", required = false) String orderId,
+                               @RequestParam(value = "employee", required = false) String employee,
+                               @RequestParam(value = "status", required = false) String status,
+                               ModelAndView model) {
+        if(client!=null){
+            model.addObject("ServiceList", employeeService.getServiceRequestByClientName(client));
+            model.setViewName("/tootaja/SearchResults");
+            return model;
+        } else if (orderId!=null){
+            model.addObject("ServiceList", serviceRequestService.getServicesByOrderId(orderId));
+            model.setViewName("/tootaja/SearchResults");
+            return model;
+        } else if (employee != null){
+            model.addObject("ServiceList", serviceRequestService.getServicesByEmployee(employee));
+            model.setViewName("/tootaja/SearchResults");
+            return model;
+        } else if (status != null){
+            model.addObject("ServiceList", serviceRequestService.getServicesByStatus(status));
+            model.setViewName("/tootaja/SearchResults");
+            return model;
+        } else {
+            model.setViewName("redirect:/tootaja/");
+        }
         return model;
     }
 
