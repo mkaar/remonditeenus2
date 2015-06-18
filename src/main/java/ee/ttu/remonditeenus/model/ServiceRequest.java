@@ -5,13 +5,18 @@ package ee.ttu.remonditeenus.model;
  */
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "service_request")
 public class ServiceRequest {
 
     private Long serviceRequest;
-    private String created;
+    private Customer customer;
+    private Employee createdBy;
+    private Date created;
+    private String serviceDescByCustomer;
+    private String serviceDescByEmployee;
     private ServiceRequestType serviceRequestStatusType;
 
     @Id
@@ -26,11 +31,12 @@ public class ServiceRequest {
         this.serviceRequest = serviceRequest;
     }
 
-    public String getCreated() {
+    @Column(name = "created")
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(String created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 
@@ -42,6 +48,44 @@ public class ServiceRequest {
 
     public void setServiceRequestStatusType(ServiceRequestType serviceRequestStatusType) {
         this.serviceRequestStatusType = serviceRequestStatusType;
+    }
+
+    @Column(name = "service_desc_by_customer")
+    public String getServiceDescByCustomer() {
+        return serviceDescByCustomer;
+    }
+
+    public void setServiceDescByCustomer(String serviceDescByCustomer) {
+        this.serviceDescByCustomer = serviceDescByCustomer;
+    }
+
+    @Column(name = "service_desc_by_employee")
+    public String getServiceDescByEmployee() {
+        return serviceDescByEmployee;
+    }
+
+    public void setServiceDescByEmployee(String serviceDescByEmployee) {
+        this.serviceDescByEmployee = serviceDescByEmployee;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "customer_fk")
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "created_by")
+    public Employee getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(Employee createdBy) {
+        this.createdBy = createdBy;
     }
 }
 

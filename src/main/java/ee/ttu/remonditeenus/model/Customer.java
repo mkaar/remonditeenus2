@@ -6,14 +6,14 @@ import javax.persistence.*;
  * Created by markoka on 9.06.2015.
  */
 @Entity
-@Table(name = "service_note")
+@Table(name = "customer")
 public class Customer {
     private Long customer;
-    private UserAccount subject;
+    private Person subject;
     private SubjectType subjectType;
 
     @Id
-    @Column(name = "service_request")
+    @Column(name = "customer")
     public Long getCustomer() {
         return customer;
     }
@@ -24,11 +24,11 @@ public class Customer {
 
     @ManyToOne
     @JoinColumn(name = "subject_fk")
-    public UserAccount getSubject() {
+    public Person getSubject() {
         return subject;
     }
 
-    public void setSubject(UserAccount subject) {
+    public void setSubject(Person subject) {
         this.subject = subject;
     }
 

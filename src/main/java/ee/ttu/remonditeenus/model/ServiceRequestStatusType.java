@@ -3,8 +3,8 @@ package ee.ttu.remonditeenus.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name="so_status_type")
-public class ServiceOrderStatusType {
+@Table(name="service_request_status_type")
+public class ServiceRequestStatusType {
 
 	private int id;
 	
@@ -12,18 +12,18 @@ public class ServiceOrderStatusType {
 	
 	@Id
 	@GeneratedValue(strategy= GenerationType.AUTO)
-	@Column(name="so_status_type")
+	@Column(name="service_request_status_type")
 	public int getId() {
 		return id;
-	}
-	
-	public void setId(int id) {
-		this.id = id;
 	}
 	
 	@Column(name="type_name")
 	public String getName() {
 		return name;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	public void setName(String name) {

@@ -15,6 +15,8 @@ public class ServiceNote {
     private ServiceOrder serviceOrder;
 
     @Id
+    @SequenceGenerator(name="snseq", sequenceName="service_note_id", allocationSize=1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="snseq")
     @Column(name="service_note")
     public Long getServiceNote() {
         return serviceNote;

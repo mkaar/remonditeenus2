@@ -8,12 +8,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class SecurityUser implements UserDetails {
 
-    private Long customerId;
+    private Long personId;
     private String username;
     private String password;
 
     public SecurityUser(UserAccount userAccount) {
-        this.customerId = userAccount.getUserAccount();
+        this.personId = userAccount.getUserAccount();
         this.username = userAccount.getUsername();
         this.password = userAccount.getPassw();
     }
@@ -59,10 +59,10 @@ public class SecurityUser implements UserDetails {
     }
 
     public Long getCustomerId() {
-        return customerId;
+        return personId;
     }
 
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
+    public void setCustomerId(Long personId) {
+        this.personId = personId;
     }
 }

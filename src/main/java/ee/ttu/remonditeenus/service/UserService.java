@@ -2,7 +2,8 @@ package ee.ttu.remonditeenus.service;
 
 import ee.ttu.remonditeenus.dao.UserDao;
 import ee.ttu.remonditeenus.dao.impl.UserDaoImpl;
-import ee.ttu.remonditeenus.model.UserAccount;
+import ee.ttu.remonditeenus.model.*;
+import jdk.nashorn.internal.runtime.UserAccessorProperty;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -14,4 +15,10 @@ import ee.ttu.remonditeenus.model.UserAccount;
 
 public interface UserService {
     UserAccount loadUserByUsername(String username);
+
+    String getAccountType(Long customerId);
+
+    Employee getEmployeeByUsername(String employeeUsername);
+
+    Customer getCustomerById(Long person);
 }
